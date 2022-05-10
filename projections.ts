@@ -9,6 +9,7 @@ export const mongoHandlers: Projector = [
             document: {
                 _id: event.bookingId,
                 roomId: event.roomId,
+                guestId: event.guestId,
                 checkIn: event.checkIn,
                 checkOut: event.checkOut,
                 price: event.price
@@ -19,7 +20,7 @@ export const mongoHandlers: Projector = [
         "V1.PaymentRegistered",
         event => ({
             filter: {_id: event.bookingId},
-            update: {$set: {outstandingAmount: event.outstandingAmount}}
+            update: {$set: {outstandingAmount: event.amount}}
         })
     )
 ];
