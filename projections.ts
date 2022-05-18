@@ -19,7 +19,7 @@ export const mongoHandlers: Projector = [
         })
     ),
     updateOne<PaymentRegistered>(
-        "V1.PaymentRegistered",
+        "V1.PaymentRecorded",
         event => ({
             filter: {_id: event.bookingId},
             update: { $set: { outstanding: event.outstanding, } }
