@@ -1,6 +1,6 @@
 import {Projector} from "./common";
 import {insertOne, updateOne} from "./mongoProjectors";
-import {PaymentRegistered, RoomBooked} from "./eventTypes";
+import {BookingFullyPaid, PaymentRegistered, RoomBooked} from "./eventTypes";
 
 export const mongoHandlers: Projector = [
     insertOne<RoomBooked>(
@@ -10,9 +10,11 @@ export const mongoHandlers: Projector = [
                 _id: event.bookingId,
                 roomId: event.roomId,
                 guestId: event.guestId,
-                checkIn: event.checkIn,
-                checkOut: event.checkOut,
-                price: event.price
+                checkInDate: event.checkIn,
+                checkOutDate: event.checkOut,
+                bookingPrice: event.bookingPrice,
+                paidAmount: event.prepaidAmount,
+                paid: false
             }
         })
     ),
@@ -20,7 +22,14 @@ export const mongoHandlers: Projector = [
         "V1.PaymentRegistered",
         event => ({
             filter: {_id: event.bookingId},
-            update: {$set: {outstandingAmount: event.amount}}
+            update: { $set: { outstanding: event.outstanding, } }
+        })
+    ),
+    updateOne<BookingFullyPaid>(
+        "V1.FullyPaid",
+        event => ({
+            filter: {_id: event.bookingId},
+            update: { $set: { paid: true } }
         })
     )
 ];

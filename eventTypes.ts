@@ -4,12 +4,17 @@ export interface RoomBooked {
     guestId: string;
     checkIn: Date;
     checkOut: Date;
-    price: number;
+    bookingPrice: number;
+    prepaidAmount: number;
 }
 
 export interface PaymentRegistered {
     bookingId: string;
     paymentId: string;
-    amount: number;
-    outstandingAmount: number;
+    paidAmount: number;
+    outstanding: number;
+}
+
+export interface BookingFullyPaid {
+    bookingId: string;
 }
